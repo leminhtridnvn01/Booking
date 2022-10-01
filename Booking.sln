@@ -13,9 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus", "EventBus\EventB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBusRabbitMQ", "EventBusRabbitMQ\EventBusRabbitMQ.csproj", "{0A0B7E0F-E56F-466F-88E6-316453AF09BE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RabbitMQContainer", "RabbitMQContainer", "{F1D17024-288E-4008-84BB-1D913C6B706C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RabbitMQContainer", "RabbitMQContainer", "{613C0CA1-FCBD-4307-A463-DB9DC5DBE9D3}"
 	ProjectSection(SolutionItems) = preProject
-		..\docker-compose.yml = ..\docker-compose.yml
+		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
 Global
