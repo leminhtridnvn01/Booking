@@ -1,4 +1,8 @@
-﻿using EventBus;
+﻿using Booking.API.Extensions;
+using Booking.Domain.Interfaces.Repositories;
+using Booking.Infrastructure.Data;
+using Booking.Infrastructure.Data.Repositories;
+using EventBus;
 using EventBus.Abstractions;
 using EventBusRabbitMQ;
 using MediatR;
@@ -29,6 +33,8 @@ namespace Booking.API
             RegisterInfrastructure(services);
 
             RegisterServices(services);
+
+            RegisterRepositories(services);
         }
 
         private void RegisterServices(IServiceCollection services)
@@ -63,6 +69,14 @@ namespace Booking.API
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
             //services.AddTransient<IIntegrationEventHandler<UserCreatedIntergrationEvent>, UserCreatedIntergrationEventHandler>();
+        }
+
+        public void RegisterRepositories(IServiceCollection services)
+        {
+            services
+                .AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>))
+                .AddImplementationsAsInterfaces(typeof(ApplicationDbContext)
+                );
         }
     }
 }
