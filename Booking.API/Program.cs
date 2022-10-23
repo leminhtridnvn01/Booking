@@ -18,25 +18,9 @@ var hcBuilder = builder.Services.AddHealthChecks();
 
 hcBuilder.AddRabbitMQ($"amqp://localhost", name: "rabbitmq", tags: new string[] { "rabbitmqbus" });
 
-builder.Services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
-{
-    var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
-
-    var factory = new ConnectionFactory()
-    {
-        HostName = "localhost",
-        DispatchConsumersAsync = true,
-        UserName = "leminhtri",
-        Password = "123456",
-    };
-
-    var retryCount = 5;
-
-    return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
-});
-
 var startup = new Startup(builder.Configuration);
 
+startup.ConfigureServices(builder.Services);
 startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();
@@ -46,9 +30,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-var eventBus = app.Services.GetRequiredService<IEventBus>();
-//eventBus.Subscribe<UserCreatedIntergrationEvent, IIntegrationEventHandler<UserCreatedIntergrationEvent>>();
 
 app.UseHttpsRedirection();
 
