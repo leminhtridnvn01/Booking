@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MediatR;
+using Booking.Domain.Entities;
 
 namespace Booking.Infrastructure.Data
 {
@@ -24,10 +25,8 @@ namespace Booking.Infrastructure.Data
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        //public DbSet<User> Users { get; set; }
-        //public DbSet<LeaveRequest> LeaveRequests { get; set; }
-        //public DbSet<Stage> Stages { get; set; }
-        //public DbSet<Status> Statuses { get; set; }
+        public DbSet<User> Users { get; set;}
+        public DbSet<Room> Rooms { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -56,8 +55,8 @@ namespace Booking.Infrastructure.Data
         public ApplicationDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseLazyLoadingProxies()
-            .UseSqlServer(@"server=192.168.2.231;database=Intern_RequestModule;user id=sa;password=vStation123;");
+                .UseLazyLoadingProxies()
+                .UseSqlServer("server=ADMIN\\MINHTRI;database=CodeDoAn;user id=sa;password=123456;");
 
             return new ApplicationDbContext(optionsBuilder.Options, new NoMediator());
         }

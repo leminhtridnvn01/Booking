@@ -6,6 +6,7 @@ using EventBus;
 using EventBus.Abstractions;
 using EventBusRabbitMQ;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Booking.API
@@ -26,57 +27,21 @@ namespace Booking.API
             services.AddSwaggerGen();
             services.AddHttpContextAccessor();
 
-            RegisterEventBus(services);
+            services.AddDbContext();
+            services.AddGenericRepositories();
+            services.AddUnitOfWork();
 
-            RegisterMediator(services);
-
-            RegisterInfrastructure(services);
-
-            RegisterServices(services);
-
-            RegisterRepositories(services);
+            services.RegisterRabbitMQ(Configuration);
+            services.RegisterEventBus();
+            services.RegisterMediator();
         }
 
-        private void RegisterServices(IServiceCollection services)
+        private void ConfigureEventBus(WebApplication app)
         {
-            //services.AddScoped<ProjectService>();
-        }
+            var eventBus = app.Services.GetRequiredService<IEventBus>();
 
-        private void RegisterInfrastructure(IServiceCollection services)
-        {
-            //services.AddScoped<IUserRepository, UserRepository>();
-        }
-
-        private void RegisterMediator(IServiceCollection services)
-        {
-            services.AddMediatR(Assembly.GetExecutingAssembly());
-            //services.AddMediatR(typeof(CreateUserDomainEvent).GetTypeInfo().Assembly);
-        }
-        private void RegisterEventBus(IServiceCollection services)
-        {
-            services.AddSingleton<IEventBus, EventBusRabbitMQServices>(sp =>
-            {
-                var subscriptionClientName = "queue_test";
-                var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQServices>>();
-                var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
-                var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
-                var serviceScopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
-                var retryCount = 5;
-
-                return new EventBusRabbitMQServices(rabbitMQPersistentConnection, logger, eventBusSubcriptionsManager, serviceScopeFactory, subscriptionClientName, retryCount);
-            });
-
-            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-
-            //services.AddTransient<IIntegrationEventHandler<UserCreatedIntergrationEvent>, UserCreatedIntergrationEventHandler>();
-        }
-
-        public void RegisterRepositories(IServiceCollection services)
-        {
-            services
-                .AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>))
-                .AddImplementationsAsInterfaces(typeof(ApplicationDbContext)
-                );
+            //eventBus.Subscribe<UserCreatedIntergrationEvent, IIntegrationEventHandler<UserCreatedIntergrationEvent>>();
+            //eventBus.Subscribe<UserUpdatedIntergrationEvent, IIntegrationEventHandler<UserUpdatedIntergrationEvent>>();
         }
     }
 }

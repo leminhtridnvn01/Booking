@@ -1,4 +1,5 @@
-﻿using Booking.Domain.Interfaces.Repositories;
+﻿using Booking.Domain.Base;
+using Booking.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Booking.Infrastructure.Data.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : Entity
     {
         private readonly ApplicationDbContext _dbContext;
 

@@ -10,7 +10,7 @@ namespace Booking.Domain.Base
 {
     public interface IBaseEntity
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
     }
 
     public interface IDeleteEntity
@@ -27,7 +27,7 @@ namespace Booking.Domain.Base
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual Guid Id { get; set; }
+        public virtual int Id { get; set; }
     }
 
     public abstract class Entity : DeleteEntity
