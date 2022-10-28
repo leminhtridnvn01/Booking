@@ -1,4 +1,7 @@
-﻿using Booking.Domain.Interfaces;
+﻿using Booking.API.InterationEvents.EventHandlers;
+using Booking.API.InterationEvents.Events;
+using Booking.Domain.Events;
+using Booking.Domain.Interfaces;
 using Booking.Domain.Interfaces.Repositories;
 using Booking.Infrastructure.Data;
 using Booking.Infrastructure.Data.Repositories;
@@ -46,13 +49,13 @@ namespace Booking.API.Extensions
             return services;
         }
 
-        public static IServiceCollection AddDbContext(this IServiceCollection services)
+        public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration Configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options
                     .UseLazyLoadingProxies()
-                    .UseSqlServer("server=ADMIN\\MINHTRI;database=CodeDoAn;user id=sa;password=123456;");
+                    .UseSqlServer(Configuration.GetSection("ConnectionString").Value);
             });
             return services;
         }
@@ -98,7 +101,7 @@ namespace Booking.API.Extensions
         public static IServiceCollection RegisterMediator(this IServiceCollection services)
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            //services.AddMediatR(typeof(CreateUserDomainEvent).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(CreateUserDomainEvent).GetTypeInfo().Assembly);
             return services;
         }
         public static IServiceCollection RegisterEventBus(this IServiceCollection services)
@@ -117,7 +120,7 @@ namespace Booking.API.Extensions
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
-            //services.AddTransient<IIntegrationEventHandler<UserCreatedIntergrationEvent>, UserCreatedIntergrationEventHandler>();
+            services.AddTransient<IIntegrationEventHandler<UserCreatedIntergrationEvent>, UserCreatedIntergrationEventHandler>();
             return services;
         }
     }

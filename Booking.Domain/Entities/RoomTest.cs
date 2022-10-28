@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Booking.Domain.Entities
 {
-    public class Room : Entity
+    public class RoomTest : Entity
     {
-        public Room()
+        public RoomTest()
         {
-            this.Users = new HashSet<User>();
+            this.Users = new HashSet<UserTest>();
         }
         public string Name { get; set; }
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<UserTest> Users { get; set; }
     }
 }

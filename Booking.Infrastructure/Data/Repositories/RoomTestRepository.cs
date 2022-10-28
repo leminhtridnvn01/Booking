@@ -8,15 +8,10 @@ using System.Threading.Tasks;
 
 namespace Booking.Infrastructure.Data.Repositories
 {
-    public class UserRepository : GenericRepository<User>, IUserRepository
+    public class RoomTestRepository : GenericRepository<RoomTest>, IRoomTestRepository
     {
-        public UserRepository(ApplicationDbContext dbContext) : base(dbContext)
+        public RoomTestRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
-        }
-
-        public List<User> GetAll()
-        {
-            return dbSet.ToList();
         }
     }
 }

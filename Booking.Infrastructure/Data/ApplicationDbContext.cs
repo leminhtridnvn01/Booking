@@ -25,8 +25,8 @@ namespace Booking.Infrastructure.Data
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        public DbSet<User> Users { get; set;}
-        public DbSet<Room> Rooms { get; set; }
+        public DbSet<UserTest> Users { get; set;}
+        public DbSet<RoomTest> Rooms { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

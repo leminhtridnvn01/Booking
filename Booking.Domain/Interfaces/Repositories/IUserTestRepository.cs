@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Booking.Domain.Interfaces.Repositories
 {
-    public interface IRoomRepository : IGenericRepository<Room>
+    public interface IUserTestRepository : IGenericRepository<UserTest>
     {
+        List<UserTest> GetAll();
     }
 }

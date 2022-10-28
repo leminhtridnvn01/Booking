@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Booking.Domain.Entities
 {
-    public class User : Entity
+    public class UserTest : Entity
     {
-        public User()
+        public UserTest()
         {
             
         }
         public string Name { get; set; }
         public int RoomId { get; set; }
-        public virtual Room Room { get; set; } 
+        public virtual RoomTest Room { get; set; } 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Booking.API.Extensions;
+using Booking.API.InterationEvents.Events;
 using Booking.Domain.Interfaces.Repositories;
 using Booking.Infrastructure.Data;
 using Booking.Infrastructure.Data.Repositories;
@@ -23,11 +24,15 @@ namespace Booking.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             services.AddHttpContextAccessor();
 
-            services.AddDbContext();
+            services.AddDbContext(Configuration);
             services.AddGenericRepositories();
             services.AddUnitOfWork();
 
@@ -36,11 +41,11 @@ namespace Booking.API
             services.RegisterMediator();
         }
 
-        private void ConfigureEventBus(WebApplication app)
+        public void ConfigureEventBus(WebApplication app)
         {
             var eventBus = app.Services.GetRequiredService<IEventBus>();
 
-            //eventBus.Subscribe<UserCreatedIntergrationEvent, IIntegrationEventHandler<UserCreatedIntergrationEvent>>();
+            eventBus.Subscribe<UserCreatedIntergrationEvent, IIntegrationEventHandler<UserCreatedIntergrationEvent>>();
             //eventBus.Subscribe<UserUpdatedIntergrationEvent, IIntegrationEventHandler<UserUpdatedIntergrationEvent>>();
         }
     }
